@@ -1,0 +1,51 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+        <div class="container" mx-3>
+            {% if user.is_authenticated %}
+                {% if isListingInWatchlist %}
+                    <form action="{% url 'removeWatchlist' id=listing.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Remove From Watchlist</button>
+                    </form>
+                {% else %}
+                    <form action="{% url 'addWatchlist' id=listing.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Add To Watchlist</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <h2>{{ listing.title }}</h2>
+        <img src="{{ listing.imageUrl }}" alt="{{ listing.title }}" height="400px">
+        <p>{{ listing.description }}</p>
+        <p>Owner: {{ listing.owner }}</p>
+        <h4>${{ listing.price }}</h4>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

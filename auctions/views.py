@@ -6,8 +6,54 @@ from django.urls import reverse
 
 from .models import User, Category, Listing
 
+
+def listing(request, id):
+    listingData = Listing.objects.get(pk=id)
+    isListingInWatchlist = request.user in listingData.watchlist.all()
+    return render(request, "auctions/listing.html", {
+        "listing": listingData,
+        "isListingInWatchlist": isListingInWatchlist,
+        "removeWatchlist": removeWatchlist
+    })
+
+def removeWatchlist(request, id):
+    listingData = Listing.objects.get(pk=id)
+    currentUser = request.user
+    listingData.watchlist.remove(currentUser)
+    return HttpResponseRedirect(reverse(listing, args=(id, ))) 
+
+
+
+def addWatchlist(request, id):
+    listingData = Listing.objects.get(pk=id)
+    currentUser = request.user
+    listingData.watchlist.add(currentUser)
+    return HttpResponseRedirect(reverse(listing, args=((id, ))))
+
+
+
+
+
 def index(request):
-    return render(request, "auctions/index.html")
+    activeListings = Listing.objects.filter(isActive=True)
+    allCategories = Category.objects.all()
+    return render(request, "auctions/index.html", {
+        "Listings": activeListings,
+        "categories": allCategories
+    })
+
+
+def displayCategory(request):
+    if request.method == "POST":
+        categoryFromForm = request.POST['category']
+        category = Category.objects.get(categoryName=categoryFromForm)
+        activeListings = Listing.objects.filter(isActive=True, category=category)
+        allCategories = Category.objects.all()
+        return render(request, "auctions/index.html", {
+            "Listings": activeListings,
+            "categories": allCategories
+        })
+
 
 
 def createListing(request):
@@ -32,7 +78,7 @@ def createListing(request):
         newListing = Listing(
             title=title,
             description=description,
-            imageurl=imageurl,
+            imageUrl=imageurl,
             price=float(price),
             category=categoryData,
             owner=currentUser
