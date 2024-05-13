@@ -30,6 +30,11 @@ def addWatchlist(request, id):
     listingData.watchlist.add(currentUser)
     return HttpResponseRedirect(reverse(listing, args=((id, ))))
 
+def watchlist(request):
+    currentUser = request.user
+    listings = currentUser.listingWatchlist.all()
+    return render(request, "auctions/watchlist.html")
+
 
 
 
