@@ -13,7 +13,6 @@ def listing(request, id):
     return render(request, "auctions/listing.html", {
         "listing": listingData,
         "isListingInWatchlist": isListingInWatchlist,
-        "removeWatchlist": removeWatchlist
     })
 
 def removeWatchlist(request, id):
@@ -30,10 +29,12 @@ def addWatchlist(request, id):
     listingData.watchlist.add(currentUser)
     return HttpResponseRedirect(reverse(listing, args=((id, ))))
 
-def watchlist(request):
+def displayWatchlist(request):
     currentUser = request.user
     listings = currentUser.listingWatchlist.all()
-    return render(request, "auctions/watchlist.html")
+    return render(request, "auctions/watchlist.html", {
+        "listings": listings
+    })
 
 
 
