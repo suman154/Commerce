@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.contrib import messages
 from .models import User, Category, Listing, Comment
 
 
@@ -15,19 +15,38 @@ def listing(request, id):
         "isListingInWatchlist": isListingInWatchlist,
     })
 
+
+
+
 def addComment(request, id):
-    currentUser = request.user,
-    listingData = Listing.objects.get(pk=id)
-    message = request.POST['newComment']
+    if request.method == 'POST':
+        currentUser = request.user
+        listingData = Listing.objects.get(pk=id)
+        message = request.POST.get('newComment', '')
+
+        newComment = Comment(
+            author=currentUser,
+            listing=listingData,
+            message=message
+        )
+        newComment.save()
+        messages.success(request, 'Comment added successfully!')
+    return HttpResponseRedirect(reverse('listing', args=(id, )))
 
 
-    newComment = Comment(
-        author = currentUser,
-        listing = listingData, 
-        message = message
-    )
+# def addComment(request, id):
+#     currentUser = request.user
+#     listingData = Listing.objects.get(pk=id)
+#     message = request.POST['newComment']
 
-    return HttpResponseRedirect(reverse(listing, args=(id, )))
+
+#     newComment = Comment(
+#         author = currentUser,
+#         listing = listingData, 
+#         message = message
+#     )
+
+#     return HttpResponseRedirect(reverse(listing, args=(id, )))
 
 def removeWatchlist(request, id):
     listingData = Listing.objects.get(pk=id)

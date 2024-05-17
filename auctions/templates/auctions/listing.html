@@ -25,9 +25,15 @@
 
         <div class="row mx-3">
             <h2>Comments</h2>
+            </div>
             {% if user.is_authenticated  %}
                 <form action="{% url 'addComment' id=listing.id %}" method="POST">
-                    <input type="text" name="newComment" placeholder="Add New Comment">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="add">Add Comment</label>
+                        <input type="text" name="newComment" placeholder="Add New Comment">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>  
                 </form>
             {% endif %}
         </div>

@@ -30,7 +30,7 @@ class Listing(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="userComment")
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True, related_name="listingComment")
-    mwssage = models.CharField(max_length=255)
+    message = models.CharField(max_length=255)
 
     def __str__(self):
         return f"{self.author} comment on {self.listing}"
