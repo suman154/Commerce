@@ -23,20 +23,30 @@
         <p>Owner: {{ listing.owner }}</p>
         <h4>${{ listing.price }}</h4>
 
-        <div class="row mx-3">
-            <h2>Comments</h2>
-            </div>
-            {% if user.is_authenticated  %}
-                <form action="{% url 'addComment' id=listing.id %}" method="POST">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="add">Add Comment</label>
-                        <input type="text" name="newComment" placeholder="Add New Comment">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </div>  
-                </form>
-            {% endif %}
-        </div>
+        
+        <h2>Comments</h2>
+        <br>
+        {% if user.is_authenticated  %}
+            <form action="{% url 'addComment' id=listing.id %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="add">Add Comment</label>
+                    <input type="text" name="newComment" placeholder="Add New Comment">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>  
+            </form>
+        {% endif %}
+        <br>
+        <ul class="list-group">
+            {% for comment in allComments %}
+                <li class="list-group-item">
+                    {{ comment.message }}
+                    <br>
+                    <p>Posted by <strong>{{ comment.author }}</strong></p>
+                </li>
+            {% endfor %}
+        </ul>
+
 {% endblock %}
 
 

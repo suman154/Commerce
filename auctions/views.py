@@ -10,9 +10,11 @@ from .models import User, Category, Listing, Comment
 def listing(request, id):
     listingData = Listing.objects.get(pk=id)
     isListingInWatchlist = request.user in listingData.watchlist.all()
+    allComments = Comment.objects.filter(listing=listingData)
     return render(request, "auctions/listing.html", {
         "listing": listingData,
         "isListingInWatchlist": isListingInWatchlist,
+        "allComments": allComments
     })
 
 
@@ -31,7 +33,7 @@ def addComment(request, id):
         )
         newComment.save()
         messages.success(request, 'Comment added successfully!')
-    return HttpResponseRedirect(reverse('listing', args=(id, )))
+        return HttpResponseRedirect(reverse('listing', args=(id, )))
 
 
 # def addComment(request, id):
