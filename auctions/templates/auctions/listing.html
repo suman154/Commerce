@@ -1,6 +1,20 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    <div class="container">
+        {% if message %}
+            {% if update %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+            {% else %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+            {% endif %}     
+            {% endif %}     
+    </div>
+
         <div class="container" mx-3>
             {% if user.is_authenticated %}
                 {% if isListingInWatchlist %}
@@ -20,8 +34,19 @@
         <h2>{{ listing.title }}</h2>
         <img src="{{ listing.imageUrl }}" alt="{{ listing.title }}" height="400px">
         <p>{{ listing.description }}</p>
-        <p>Owner: {{ listing.owner }}</p>
-        <h4>${{ listing.price }}</h4>
+        <p>Owner: <strong>{{ listing.owner }}</strong></p>
+        <h6>Current Price: <strong>${{ listing.price.bid }}</strong></h6>
+        {% if user.is_authenticated %}
+            <form action="{% url 'addBid' id=listing.id %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="price">Add Bid</label>
+                    <input type="number" min="0" name="newBid" placeholder="Add New Bid">
+                    <button type="submit" class="btn btn-success">Add</button>
+                </div>
+            </form>
+        {% endif %}
+        <p>{{ message }}</p>
 
         
         <h2>Comments</h2>
