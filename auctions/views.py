@@ -11,10 +11,28 @@ def listing(request, id):
     listingData = Listing.objects.get(pk=id)
     isListingInWatchlist = request.user in listingData.watchlist.all()
     allComments = Comment.objects.filter(listing=listingData)
+    isOwner = request.user.username == listingData.owner.username
     return render(request, "auctions/listing.html", {
         "listing": listingData,
         "isListingInWatchlist": isListingInWatchlist,
-        "allComments": allComments
+        "allComments": allComments,
+        "isOwner": isOwner
+    })
+
+def closeAuction(request, id):
+    listingData = Listing.objects.get(pk=id)
+    listingData.isActive = False
+    listingData.save()
+    isOwner = request.user.username == listingData.owner.username
+    isListingInWatchlist = request.user in listingData.watchlist.all()
+    allComments = Comment.objects.filter(listing=listingData)
+    return render(request, "auctions/listing.html", {
+        "listing": listingData,
+        "isListingInWatchlist": isListingInWatchlist,
+        "allComments": allComments,
+        "isOwner": isOwner,
+        "update": True,
+        "message": "Conguralation! your auction is closed."
     })
 
 
@@ -41,6 +59,7 @@ def addBid(request, id):
     listingData = Listing.objects.get(pk=id)
     isListingInWatchlist = request.user in listingData.watchlist.all()
     allComments = Comment.objects.filter(listing=listingData)
+    isOwner = request.user.username == listingData.owner.username
     if int(newBid) > listingData.price:
         updateBid = Bid(user=request.user, bid=int(newBid))
         updateBid.save()
@@ -52,6 +71,7 @@ def addBid(request, id):
             "isListingInWatchlist": isListingInWatchlist,
             "allComments": allComments,
             "update": True,
+            "isOwner": isOwner
     })
         
     else:
@@ -61,6 +81,7 @@ def addBid(request, id):
             "isListingInWatchlist": isListingInWatchlist,
             "allComments": allComments,
             "update": False,
+            "isOwner": isOwner
         })
 
 
