@@ -43,7 +43,25 @@ Categories: Users can browse listings by category.
 
 Admin Interface: Administrators can view, add, edit, and delete listings, bids, and comments through the Django admin interface.
 
+### Preview
+![register](https://github.com/suman154/Commerce/assets/119277749/dd32c2f7-ab0c-4ad6-8e14-9bcebca0d2a6)
 
+![login](https://github.com/suman154/Commerce/assets/119277749/9f431664-2d0e-4bfd-a5d4-84292f00de33)
+
+![active listing](https://github.com/suman154/Commerce/assets/119277749/ba6b54d2-87ee-4ecb-8a3e-528dd6048e31)
+
+![create new listing](https://github.com/suman154/Commerce/assets/119277749/109ba103-d434-4625-97df-7691b142f4a0)
+
+![category](https://github.com/suman154/Commerce/assets/119277749/b176a875-ac9d-4f59-80b9-50c032e0cf69)
+
+![watchlist](https://github.com/suman154/Commerce/assets/119277749/e25757b8-bc57-4ac3-837b-2d679b2b56f2)
+
+
+![close listing](https://github.com/suman154/Commerce/assets/119277749/80e60ab3-727f-4141-82fd-9e0743acbb19)
+
+
+### Watch on YouTube
+[Click link to Watch the video](https://youtu.be/XpM8vLGjN-o?si=KZUmQqX_kdzzMXbq)
 
 ## Installation
 To set up this project on your computer:
