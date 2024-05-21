@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, get_object_or_404
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
 from .models import User, Category, Listing, Comment, Bid
+
 
 
 def listing(request, id):
@@ -18,6 +20,19 @@ def listing(request, id):
         "allComments": allComments,
         "isOwner": isOwner
     })
+
+
+def listings_by_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    listings = category.listings.filter(is_active=True)
+    return render(request, 'auctions/categories.html', {'category': category, 'listings': listings})
+
+
+def category_list(request):
+    categories = Category.objects.all()
+    print(categories)  # Debugging line
+    return render(request, "auctions/categories.html", {'categories': categories})
+
 
 def closeAuction(request, id):
     listingData = Listing.objects.get(pk=id)
@@ -55,34 +70,43 @@ def addComment(request, id):
 
 
 def addBid(request, id):
-    newBid = request.POST['newBid']
-    listingData = Listing.objects.get(pk=id)
+    listingData = get_object_or_404(Listing, pk=id)
     isListingInWatchlist = request.user in listingData.watchlist.all()
     allComments = Comment.objects.filter(listing=listingData)
-    isOwner = request.user.username == listingData.owner.username
-    if int(newBid) > listingData.price:
-        updateBid = Bid(user=request.user, bid=int(newBid))
-        updateBid.save()
-        listingData.price = updateBid
-        listingData.price.save()
-        return render(request, "auctions/listing.html", {
-            "listing": listingData,
-            "message": "Bid was updated successfully",
-            "isListingInWatchlist": isListingInWatchlist,
-            "allComments": allComments,
-            "update": True,
-            "isOwner": isOwner
+    isOwner = request.user == listingData.owner
+
+    if request.method == "POST":
+        newBid = request.POST.get('newBid')
+        if newBid:
+            newBid = int(newBid)
+            if newBid > listingData.price:
+                listingData.price = newBid
+                listingData.save()
+                return render(request, "auctions/listing.html", {
+                    "listing": listingData,
+                    "message": "Bid was updated successfully",
+                    "isListingInWatchlist": isListingInWatchlist,
+                    "allComments": allComments,
+                    "update": True,
+                    "isOwner": isOwner
+                })
+            else:
+                return render(request, "auctions/listing.html", {
+                    "listing": listingData,
+                    "message": "Bid must be higher than the current price.",
+                    "isListingInWatchlist": isListingInWatchlist,
+                    "allComments": allComments,
+                    "update": False,
+                    "isOwner": isOwner
+                })
+
+    
+    return render(request, "auctions/listing.html", {
+        "listing": listingData,
+        "isListingInWatchlist": isListingInWatchlist,
+        "allComments": allComments,
+        "isOwner": isOwner
     })
-        
-    else:
-        return render(request, "auctions/listing.html", {
-            "listing": listingData,
-            "message": "Bid must be higher than the current price.",
-            "isListingInWatchlist": isListingInWatchlist,
-            "allComments": allComments,
-            "update": False,
-            "isOwner": isOwner
-        })
 
 
 

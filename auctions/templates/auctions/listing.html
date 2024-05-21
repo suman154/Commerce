@@ -47,7 +47,8 @@
         <img src="{{ listing.imageUrl }}" alt="{{ listing.title }}" height="400px">
         <p>{{ listing.description }}</p>
         <p>Owner: <strong>{{ listing.owner }}</strong></p>
-        <h6>Current Price: <strong>${{ listing.price.bid }}</strong></h6>
+        <h6>Current Price: <strong>${{ listing.price }}</strong></h6>
+
         {% if user.is_authenticated %}
             <form action="{% url 'addBid' id=listing.id %}" method="POST">
                 {% csrf_token %}
