@@ -1,4 +1,5 @@
 echo "BUILD START"
-python3.12.3 -m pip install -r requirements.txt
-python3.12.3 manage.py collectstatic 
-echo "ECHO END"
+mkdir -p staticfiles_build
+python3 manage.py collectstatic --noinput
+python3 manage.py migrate
+echo "BUILD END"
