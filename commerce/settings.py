@@ -11,8 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from decouple import config
-
+import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -75,17 +74,16 @@ WSGI_APPLICATION = 'commerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'muzYtYmYtZZjOjXFGUcxvgoPqUDijYFw',
-        'HOST': 'monorail.proxy.rlwy.net',
-        'PORT': '54485',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
+DATABASES['default'] = dj_database_url.parse('postgres://commerce_picm_user:0wN97QZVyrOn7UzQHpWEh5rnYwsPpnde@dpg-cpj8ta6ct0pc7385j4k0-a.oregon-postgres.render.com/commerce_picm')
 
 
 AUTH_USER_MODEL = 'auctions.User'
