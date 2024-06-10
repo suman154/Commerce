@@ -26,7 +26,7 @@ SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['vercell.app']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,16 +76,16 @@ WSGI_APPLICATION = 'commerce.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # Database settings
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('railway'),
-        'USER': os.environ.get('postgres'),
-        'PASSWORD': os.environ.get('tSJLvkbpPODtLuPOBWUTmTpmVmRMGsdD'),
-        'HOST': os.environ.get('viaduct.proxy.rlwy.net', default='127.0.0.1'),
-        'PORT': os.environ.get('15736', default='5432'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('railway'),
+#         'USER': os.environ.get('postgres'),
+#         'PASSWORD': os.environ.get('tSJLvkbpPODtLuPOBWUTmTpmVmRMGsdD'),
+#         'HOST': os.environ.get('viaduct.proxy.rlwy.net', default='127.0.0.1'),
+#         'PORT': os.environ.get('15736', default='5432'),
+#     }
+# }
 
 AUTH_USER_MODEL = 'auctions.User'
 
@@ -126,7 +126,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
