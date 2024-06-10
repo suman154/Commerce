@@ -75,17 +75,18 @@ WSGI_APPLICATION = 'commerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# Database settings
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('railway'),
-#         'USER': os.environ.get('postgres'),
-#         'PASSWORD': os.environ.get('tSJLvkbpPODtLuPOBWUTmTpmVmRMGsdD'),
-#         'HOST': os.environ.get('viaduct.proxy.rlwy.net', default='127.0.0.1'),
-#         'PORT': os.environ.get('15736', default='5432'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'muzYtYmYtZZjOjXFGUcxvgoPqUDijYFw',
+        'HOST': 'monorail.proxy.rlwy.net',
+        'PORT': '54485',
+    }
+}
+
+
 
 AUTH_USER_MODEL = 'auctions.User'
 
